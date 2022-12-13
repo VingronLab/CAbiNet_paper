@@ -27,7 +27,7 @@ mkdir -p $OUTDIR
 ## If you started reproducing the results from Preprocessing step ##############
 ################################################################################
 
-files="../Preprocessing/sim_data/preprocessed/${dataset}/*.rds"
+files="../Data/preprocessed/simulated/${dataset}/*.rds"
 
 ################################################################################
 ## If you skip Preprocessing step and start from the Benchmarking step #########

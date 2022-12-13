@@ -51,7 +51,7 @@ mkdir -p $logdir
 ## If you started reproducing the results from Preprocessing step ##############
 ################################################################################
 
-files="../Preprocessing/ExperimentalData/preprocessed/${dataset}/*.rds"
+files="../Data/preprocessed/realdata/${dataset}/*.rds"
 
 
 ################################################################################

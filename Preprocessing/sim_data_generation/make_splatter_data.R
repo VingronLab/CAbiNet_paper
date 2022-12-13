@@ -7,11 +7,34 @@ library(scran)
 set.seed(12345)
 
 # Uncomment for splatter data based on Zeisel Brain data.
-# maindir <- "../sim_data/simulated_data/zeisel/"
-# sce <- readRDS("../sim_data/data/preprocessed/zeisel.rds")
 
-maindir <- "../sim_data/simulated_data/pbmc3k/"
-sce <- readRDS("../sim_data/data/preprocessed/pbmc3k.rds")
+# library(scRNAseq)
+# sce <- ZeiselBrainData()
+# clust.sce<- quickCluster(sce) 
+# sce <- computeSumFactors(sce, cluster=clust.sce, min.mean=0.1)
+# sce <- logNormCounts(sce)
+# sce <- runUMAP(sce)
+# plotUMAP(sce, colour_by = "level1class")
+
+# Uncomment for splatter data based on Pbcm3k data.
+
+library(TENxPBMCData)
+pbmc3k <- TENxPBMCData(dataset = "pbmc3k")
+
+clust.pbmc <- quickCluster(pbmc3k) 
+pbmc3k <- computeSumFactors(pbmc3k, cluster=clust.pbmc, min.mean=0.1)
+pbmc3k <- logNormCounts(pbmc3k)
+
+pbmc3k <- runUMAP(pbmc3k)
+plotUMAP(pbmc3k, colour_by = "level1class")
+
+logcounts(pbmc3k) <- as.matrix(logcounts(pbmc3k))
+counts(pbmc3k) <- as.matrix(counts(pbmc3k))
+
+
+
+params <- splatEstimate(pbmc3k)
+
 
 params <- splatEstimate(sce)
 
