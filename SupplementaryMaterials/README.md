@@ -10,6 +10,18 @@ Detailed information of the files are:
 * Figure2a_PBMC10x_CAbiNet_plotly.html
     - Interactive biMAP of PBMC10x data in Fig.2a. Please put the mouse cursor over the points, the information (type/biclustering/name) will automatically printed to screen.
     
+* Fig3a_tabula_muris_biMAP_interactive.html
+    - Interactive scatter biMAP for the tabula muris data.
+
+* Fig3a_tabula_muris_hex_biMAP_interactive.html
+    - Interactive biMAP with cells binned in hexagons for easier browsing of the genes for the tabula muris data.
+
+* Fig4a_brain_organoids_hex_biMAP_interactive.html
+    - Interactive scatter biMAP for the brain organoid data.
+
+* Fig4a_brain_organoids_hex_biMAP_interactive.html
+    - Interactive biMAP with cells binned in hexagons for easier browsing of the genes for the brain organoid data.
+    
 * Figure5b_DmelSpatial_CAbiNet_plotly.html
     - Interactive biMAP of DemlSpatial data.
     
@@ -18,4 +30,6 @@ Detailed information of the files are:
     
 * Figure5e_DmelSpatial_3dscatter_annotation_sub_.html
     - A subset of the plot above.
+
+
 
