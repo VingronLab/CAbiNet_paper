@@ -3,37 +3,101 @@ library(SingleCellExperiment)
 library(scater)
 library(scuttle)
 library(scran)
+library(scRNAseq)
+library(TENxPBMCData)
 
 set.seed(12345)
 
-# Uncomment for splatter data based on Zeisel Brain data.
 
-# library(scRNAseq)
-# sce <- ZeiselBrainData()
-# clust.sce<- quickCluster(sce) 
-# sce <- computeSumFactors(sce, cluster=clust.sce, min.mean=0.1)
-# sce <- logNormCounts(sce)
-# sce <- runUMAP(sce)
-# plotUMAP(sce, colour_by = "level1class")
+# Uncomment for splatter data based on Zeisel Brain data.
+dataset = "zeisel"
 
 # Uncomment for splatter data based on Pbcm3k data.
+# dataset = "pbmc3k"
 
-library(TENxPBMCData)
-pbmc3k <- TENxPBMCData(dataset = "pbmc3k")
+maindir <- paste0("../Data/rawdata/simulated/", dataset, "/")
+dir.create(maindir)
 
-clust.pbmc <- quickCluster(pbmc3k) 
-pbmc3k <- computeSumFactors(pbmc3k, cluster=clust.pbmc, min.mean=0.1)
-pbmc3k <- logNormCounts(pbmc3k)
+if(dataset == "zeisel"){
 
-pbmc3k <- runUMAP(pbmc3k)
-plotUMAP(pbmc3k, colour_by = "level1class")
+  sce <- ZeiselBrainData()
+  clust.sce<- quickCluster(sce) 
+  sce <- computeSumFactors(sce, cluster=clust.sce, min.mean=0.1)
+  sce <- logNormCounts(sce)
+  sce <- runUMAP(sce)
+  # plotUMAP(sce, colour_by = "level1class")
 
-logcounts(pbmc3k) <- as.matrix(logcounts(pbmc3k))
-counts(pbmc3k) <- as.matrix(counts(pbmc3k))
+} else if (dataset == "pbmc3k"){
+
+  sce <- TENxPBMCData(dataset = "pbmc3k")
+  rownames(sce) <- rowData(sce)$Symbol_TENx
+  colnames(sce) <- colData(sce)$Barcode
+
+  # For pre-processing we used Seurat.
+  pbmc <- CreateSeuratObject(counts = as.matrix(counts(sce)),
+                            assay = "RNA",
+                            project = "pbmc3k",
+                            min.cells = 3,
+                            min.features = 200,
+                            meta.data = as.data.frame(colData(sce)))
 
 
+  pbmc[["percent.mt"]] <- PercentageFeatureSet(pbmc, pattern = "^MT-")
 
-params <- splatEstimate(pbmc3k)
+  # Filter data
+  pbmc <- subset(pbmc, subset = nFeature_RNA > 200 & nFeature_RNA < 2500 & percent.mt < 5)
+  no_zeros_rows <- rowSums(pbmc, slot = "counts") > 0
+  pbmc <- pbmc[no_zeros_rows,]
+
+  # Normalization
+  pbmc <- NormalizeData(pbmc,
+                        normalization.method = "LogNormalize",
+                        scale.factor = 10000,
+                        verbose = FALSE)
+
+  pbmc <- FindVariableFeatures(pbmc,
+                               nfeatures = 2000,
+                               verbose = FALSE)
+
+  # Scaling
+  all.genes <- rownames(pbmc)
+  pbmc <- ScaleData(pbmc,
+                    features = all.genes,
+                    verbose = FALSE)
+
+  # Run PCA
+  pbmc <- RunPCA(pbmc,
+                 features = VariableFeatures(object = pbmc),
+                 verbose = FALSE)
+
+  # Cell clustering
+  pbmc <- FindNeighbors(pbmc, dims = 1:10, verbose = FALSE)
+  pbmc <- FindClusters(pbmc, resolution = 0.5, verbose = FALSE)
+
+  pbmc <- RunUMAP(pbmc, dims = 1:10, verbose = FALSE)
+  # DimPlot(pbmc, reduction = "umap", label = FALSE, pt.size = 0.5)
+
+  new.cluster.ids <- c("naive_CD4_Tcell",
+                       "CD14_monocyte", 
+                       "memory_CD4_Tcell", 
+                       "Bcell", 
+                       "CD8_Tcell", 
+                       "FCGR3A_monocyte", 
+                       "NKcell", 
+                       "DC", 
+                       "platelet")
+
+  names(new.cluster.ids) <- levels(pbmc)
+  pbmc <- RenameIdents(pbmc, new.cluster.ids)
+  pbmc$cell_type <- Idents(pbmc)
+
+  sce <- as.SingleCellExperiment(pbmc)
+  logcounts(sce) <- as.matrix(logcounts(sce))
+  counts(sce) <- as.matrix(counts(sce))
+
+} else {
+  stop("Please pick either 'zeisel' or 'pbmc3k' for the dataset to base the simulation on.")
+}
 
 
 params <- splatEstimate(sce)
