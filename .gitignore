@@ -8,4 +8,5 @@
 # src/*.dll
 # .ipynb*
 .ipynb_*/
+*/.ipynb_*/
 # inst/doc
