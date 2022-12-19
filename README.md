@@ -1,7 +1,7 @@
 
 # CAbiNet - code accompanying the manuscript
 
-This code reproduces the figures in our manuscript "CAbiNet:Joint visualization of cells and genes based on a gene-cell association graph" that can be found here: ADD LINK TO PAPER.
+This code reproduces the figures in our manuscript "CAbiNet: Joint visualization of cells and genes based on a gene-cell graph" that can be found here: **Link to paper**.
 
 
 We split the code into 3 sections to make it easier to reproduce the findings:
