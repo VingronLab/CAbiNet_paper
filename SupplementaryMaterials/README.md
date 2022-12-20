@@ -7,29 +7,26 @@ Here we offer the interactive version of biMAPs and 3d plots discussed in our pa
 
 Detailed information of the files are:
 
-* Figure2a_PBMC10x_CAbiNet_plotly.html
+* SupplM1_Fig2a_PBMC10x_CAbiNet_plotly.html
     - Interactive biMAP of PBMC10x data in Fig.2a. Please put the mouse cursor over the points, the information (type/biclustering/name) will automatically printed to screen.
     
-* Fig3a_tabula_muris_biMAP_interactive.html
+* SupplM2_Fig3a_tabula_muris_biMAP_interactive.html
     - Interactive scatter biMAP for the tabula muris data.
 
-* Fig3a_tabula_muris_hex_biMAP_interactive.html
-    - Interactive biMAP with cells binned in hexagons for easier browsing of the genes for the tabula muris data.
-
-* Fig4a_brain_organoids_hex_biMAP_interactive.html
+* SupplM3_Fig4a_brain_organoids_scatter_biMAP_interactive.html
     - Interactive scatter biMAP for the brain organoid data.
-
-* Fig4a_brain_organoids_hex_biMAP_interactive.html
-    - Interactive biMAP with cells binned in hexagons for easier browsing of the genes for the brain organoid data.
     
-* Figure5b_DmelSpatial_CAbiNet_plotly.html
+* SupplM4_Fig5b_DmelSpatial_CAbiNet_plotly.html
     - Interactive biMAP of DemlSpatial data.
     
-* Figure5e_DmelSpatial_3dscatter_NewAnnotation_.html
+* SupplM5_Fig5e_DmelSpatial_3dscatter_NewAnnotation_.html
     - 3D scatter plot of the DmelSpatial data with CAbiNet biclustering based new cell type annotations.
     
-* Figure5e_DmelSpatial_3dscatter_annotation_sub_.html
+* SupplM6_Fig5e_DmelSpatial_3dscatter_annotation_sub_.html
     - A subset of the plot above.
+
+* SupplM7_data_source.xlsx
+    - A table noting the size and resource of the data sets used in the manuscript.
 
 
 
