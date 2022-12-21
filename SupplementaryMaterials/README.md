@@ -7,16 +7,16 @@ Here we offer the interactive version of biMAPs and 3d plots discussed in our pa
 
 Detailed information of the files are:
 
-* SupplM1_Fig2a_PBMC10x_CAbiNet_plotly.html
+* SupplM1_Fig2a_PBMC10x_CAbiNet_interactivePlotly.html
     - Interactive biMAP of PBMC10x data in Fig.2a. Please put the mouse cursor over the points, the information (type/biclustering/name) will automatically printed to screen.
     
-* SupplM2_Fig3a_tabula_muris_biMAP_interactive.html
+* SupplM2_Fig3a_tabula_muris_biMAP_interactivePlotly.html
     - Interactive scatter biMAP for the tabula muris data.
 
-* SupplM3_Fig4a_brain_organoids_scatter_biMAP_interactive.html
+* SupplM3_Fig4a_brain_organoids_scatter_biMAP_interactivePlotly.html
     - Interactive scatter biMAP for the brain organoid data.
     
-* SupplM4_Fig5b_DmelSpatial_CAbiNet_plotly.html
+* SupplM4_Fig5b_DmelSpatial_CAbiNet_interactivePlotly.html
     - Interactive biMAP of DemlSpatial data.
     
 * SupplM5_Fig5e_DmelSpatial_3dscatter_NewAnnotation_.html
