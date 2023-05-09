@@ -10,3 +10,4 @@
 .ipynb_*/
 */.ipynb_*/
 # inst/doc
+.idea
