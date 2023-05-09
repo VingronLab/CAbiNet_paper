@@ -16,7 +16,7 @@ We split the code into 3 sections to make it easier to reproduce the findings:
 * Results:
     - Jupyter-notebooks containing the results shown in figures (Fig.2-6) in our manuscript. 
 
-If you wish to redo the whole analysis, you can download all the raw data sets from the repository (LINK HERE!!!!) to the empty folder Data/rawdata, and follows 3 sections (Preprocessing -> Benchmarking -> Results) mentioned above. Tips: download rawdata into
+If you wish to redo the whole analysis, you can download all the raw data sets from the repository https://zenodo.org/record/7433294#.Y6HA5rTMI11 to the empty folder Data/rawdata, and follows 3 sections (Preprocessing -> Benchmarking -> Results) mentioned above. Tips: download rawdata into
 * Data/rawdata/  (remeber to unzip the zip-files in folder rawdata/simulated/)
 
 Or you can reproduce the results starting with the preprocessed data and follow the scripts in Benchmarking/ folder. Tips: download preprocessed data into

@@ -1,6 +1,6 @@
 
 library(Rcpp)
-library(CAclust)
+library(CAbiNet)
 library(APL)
 library(tidyverse)
 library(SingleCellExperiment)

@@ -1,7 +1,7 @@
 
 # CAbiNet - Data sets used in the manuscript
 
-All the raw/preprocessed datasets and the benchmarking resutls/the data sets discussed in paper can be found from the online data repository ADD LINK HERE!!!
+All the raw/preprocessed datasets and the benchmarking resutls/the data sets discussed in paper can be found from the online data repository https://zenodo.org/record/7433294#.Y6HA5rTMI11.
 
 In the folder rawdata/, we provided 9 data sets we downloaded from the public resources as listed in the Table 2 in our manuscript and in the supplementary data_source.xlsx file. Some of the data sets are subsetted and assigned expert annotated cell types to the metadata following the codes in the file:
 - DataFormatting.ipynb
