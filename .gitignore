@@ -5,6 +5,8 @@
 /Benchmarking/data_scalability/pbmc3k
 /Data/*
 !/Data/.gitkeep
+!/Data/DataFormatting.ipynb
+!/Data/README.md
 Data.zip
 
 
