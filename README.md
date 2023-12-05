@@ -22,7 +22,7 @@ We split the code into several sections to make it easier to reproduce the findi
     - Interactive plots.
 
 
-If you wish to redo the whole analysis, you can simply download all the data sets from the repository https://zenodo.org/record/7433294#.Y6HA5rTMI11 to the empty folder `Data`, and follows the 3 sections (Preprocessing -> Benchmarking -> Results) mentioned above. If you simply extract the downloaded data into the `./Data` directory you will have all the data necessary to reproduce our results.
+If you wish to redo the whole analysis, you can simply download all the data sets from the repository https://zenodo.org/records/10260709 to the empty folder `Data`, and follows the 3 sections (Preprocessing -> Benchmarking -> Results) mentioned above. If you simply extract the downloaded data into the `./Data` directory you will have all the data necessary to reproduce our results.
 
 In case you would like to only use parts of the data, here are some tips:
 
