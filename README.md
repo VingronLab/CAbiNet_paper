@@ -4,7 +4,7 @@
 This code reproduces the figures in our manuscript "CAbiNet: Joint visualization of cells and genes based on a gene-cell graph" that can be found here: **Link to paper**.
 
 
-We split the code into 3 sections to make it easier to reproduce the findings:
+We split the code into several sections to make it easier to reproduce the findings:
 
 * Preprocessing: 
     - Simulated data sets generated with Splatter from two scRNA-seq data sets.
@@ -12,18 +12,28 @@ We split the code into 3 sections to make it easier to reproduce the findings:
 * Benchmarking:
     - Benchmarking of simulated data sets.
     - Benchmarking of experimental scRNA-seq data sets.
-    - Scripts for collecting results.
+    - Scripts for collating the results.
+    - Evaluation of the scalability and robustness of CAbiNet.
 * Results:
-    - Jupyter-notebooks containing the results shown in figures (Fig.2-6) in our manuscript. 
+    - Jupyter-notebooks containing the results shown in figures (Fig.2-6) in our manuscript as well as the supplementary figures.
+* Data:
+    - Scripts that download and standardize the raw data discussed in Results.
+* SupplementaryMaterial:
+    - Interactive plots.
 
-If you wish to redo the whole analysis, you can download all the raw data sets from the repository https://zenodo.org/record/7433294#.Y6HA5rTMI11 to the empty folder Data/rawdata, and follows 3 sections (Preprocessing -> Benchmarking -> Results) mentioned above. Tips: download rawdata into
-* Data/rawdata/  (remeber to unzip the zip-files in folder rawdata/simulated/)
 
-Or you can reproduce the results starting with the preprocessed data and follow the scripts in Benchmarking/ folder. Tips: download preprocessed data into
-* Data/preprocessed/ (remeber to unzip the zip-files in folder preprocessed/simulated/)
+If you wish to redo the whole analysis, you can simply download all the data sets from the repository https://zenodo.org/record/7433294#.Y6HA5rTMI11 to the empty folder `Data`, and follows the 3 sections (Preprocessing -> Benchmarking -> Results) mentioned above. If you simply extract the downloaded data into the `./Data` directory you will have all the data necessary to reproduce our results.
 
-The easiest way to reproduce the findings in the manuscript is to download the benchmarking/ and disscussed_data folders into directory Data/ and then run the jupyter notebooks in the "Results" folder.
-* Data/benchmarking/  
-* Data/discussed_data/
+In case you would like to only use parts of the data, here are some tips:
+
+- Download the RAW data into the correct folder under either `Data/sim_data/raw`, `Data/real_data/raw` or `Data/discussed_data/raw`.
+- Alternatively you can reproduce the results starting with the preprocessed data and follow the scripts in `Benchmarking` folder. Simply download preprocessed data into `Data/sim_data/preprocessed`, `Data/real_data/preprocessed` or `Data/discussed_data/preprocessed`
+
+The easiest way to reproduce the findings in the manuscript is to download the archive from the online repository and to unpack all the data into the `Data` directory and to then run the jupyter notebooks in the `Results` folder.
+Necessary data files to reproduce plots from the manuscript:
+* Data/discussed_data/preprocessed 
+* Data/sim_data/preprocessed
+* Data/real_data/preprocessed
+* Benchmarking/results (precomputed benchmarking results)
 
 Some scripts may need to be adapted to your computational environment, as they were created with the server structure of the Max Planck Institute for Molecular Genetics in mind.

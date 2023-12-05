@@ -1,19 +1,10 @@
 
-source("/project/CAclust_scripts/CAclust_paper/benchmarking_splatter_sim/setup.R")
+source("../setup.R")
 
 algorithm <- "Seurat"
 
 rownames(data_old) = gsub('_', '-', rownames(data_old))
 
-# if (is(counts(data_old), 'dgTMatrix')){
-#   counts(data_old) = Matrix(counts(data_old), sparse = T)
-# }
-# if (is(logcounts(data_old), 'dgTMatrix')){
-#   logcounts(data_old) = Matrix(logcounts(data_old), sparse = T)
-# }
-
-
-# seu <- as.Seurat(data_old)
 
 seu <- CreateSeuratObject(counts = as(counts(data_old), "dgCMatrix"),
                           meta.data = as.data.frame(colData(data_old)))
@@ -25,7 +16,6 @@ seu <- SetAssayData(object = seu,
                     
 seu <- FindVariableFeatures(object = seu,
                             nfeatures = ntop)
-# seu <- FindVariableFeatures(seu, selection.method = "vst", nfeatures = 4000)
 
 all.genes <- rownames(seu)
 
@@ -82,8 +72,6 @@ seurat_genes <- matrix(FALSE, nrow = length(VariableFeatures(seu)), ncol = lengt
 rownames(seurat_genes) <- VariableFeatures(seu)
 colnames(seurat_genes) <- paste0("Bic_", ccs)
 
-# seurat_genes <- matrix(FALSE, nrow = nrow(seu), ncol = length(ccs))
-# rownames(seurat_genes) <- rownames(seu)
 
 for (i in seq_along(ccs)){
 
@@ -104,11 +92,6 @@ res <- new("Biclust","Parameters" = opt,
                        "info" = list("Seurat clustering and DEA."))
 
 data_old <- data_old[VariableFeatures(seu),]
-#cat('length of variable features,', length(VariableFeatures(seu)), '\n')
-
-#data_old <- data_old[rownames(data_old) %in% VariableFeatures(seu),]
-
-#cat('Number of genes remained:', nrow(data_old), '\n')
 
 #########
 if (isTRUE(sim)){
@@ -151,3 +134,4 @@ if (isTRUE(sim)){
 write_csv(eval_res, file.path(outdir, paste0(algorithm, "_", name, '_EVALUATION.csv')))
 
 print('All done!')
+cat("\nFinished benchmarking!\n")

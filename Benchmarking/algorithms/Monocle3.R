@@ -1,6 +1,5 @@
 
-# source("/project/CAclust_scripts/CAclust_paper/benchmarking_splatter_sim/setup.R")
-source('/project/CAclust_scripts/CAclust_paper/benchmarking_splatter_sim/setup.R')
+source("../setup.R")
 
 
 
@@ -33,11 +32,9 @@ cds <- cluster_cells(cds,
                      resolution = resolution,
                      random_seed = 1)
 
-# res <- partitions(cds, reduction_method = reduction_method)
 part <- partitions(cds, reduction_method = reduction_method)
 
 
-# gcb <- "partition"
 
 if (length(unique(part)) == 1){
 
@@ -88,23 +85,6 @@ if (length(unique(part)) == 1){
 
     gcs <- sort(unique(top_specific_markers$cell_group))
 
-    # monocle_genes <- matrix(FALSE, nrow = nrow(top_specific_markers), ncol = length(ccs))
-    # rownames(monocle_genes) <- top_specific_markers$gene_id
-    # colnames(monocle_genes) <- paste0("Bic_", ccs)
-
-    # # monocle_genes <- matrix(FALSE, nrow = nrow(cds), ncol = length(ccs))
-    # # rownames(monocle_genes) <- rownames(cds)
-
-    # for (i in seq_along(ccs)){
-
-    #     if(!ccs[i] %in% gcs) next
-
-    #     clust_genes <- top_specific_markers$gene_id[which(top_specific_markers$cell_group == ccs[i])]
-    #     idx <- which(rownames(monocle_genes) %in% clust_genes)
-    #     monocle_genes[idx, i] <- TRUE
-
-    # }
-
     monocle_genes <- matrix(FALSE, nrow = nrow(cds), ncol = length(ccs))
     rownames(monocle_genes) <- rownames(cds)
     colnames(monocle_genes) <- paste0("Bic_", ccs)
@@ -129,10 +109,6 @@ if (length(unique(part)) == 1){
 
 
 
-
-
-
-# data_old <- data_old[top_specific_markers$gene_id,]
 
 #########
 if (isTRUE(sim)){
@@ -186,3 +162,5 @@ print('All done!')
 # ggsave(plot = p,
 #        file = file.path(outdir, "img", paste0(algorithm, "_", name, '_DE_genes_comparison.png')))
 # }
+
+cat("\nFinished benchmarking!\n")

@@ -1,15 +1,9 @@
 
 
-source("/project/CAclust_scripts/CAclust_paper/benchmarking_splatter_sim/setup.R")
+source("../setup.R")
 
 algorithm <- "scPNMF"
 
-# write_csv(as_tibble(opt), file.path(outdir, paste0(algorithm, "_", name, '_parameters.csv')))
-# saveRDS(opt, file.path(outdir, paste0(algorithm, "_", name, '_parameters.rds')))
-
-
-# use logcounts.
-# How many features? ALL!
 ngenes = 100
 dims_pca = 50
 
@@ -56,12 +50,6 @@ for (basis in seq_along(ig$InfoGene)){
 data <- data_old[sel_genes,]
 data <- runPCA(data, ncomponents = dims_pca)
 nn.clusters <- clusterCells(data, use.dimred="PCA")
-
-# cnn.clusters <- clusterCells(data,
-#                              use.dimred="PCA",
-#                              BLUSPARAM=SNNGraphParam(k=10,
-#                                                      type="rank",
-#                                                      cluster.fun="walktrap"))
 
 # scPNMF
 cat("\nStarting scPNMF\n")
@@ -124,3 +112,4 @@ if (isTRUE(sim)){
 write_csv(eval_res, file.path(outdir, paste0(algorithm, "_", name, '_EVALUATION.csv')))
 
 print('All done!')
+cat("\nFinished benchmarking!\n")

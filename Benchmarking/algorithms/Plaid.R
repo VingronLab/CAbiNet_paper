@@ -1,12 +1,7 @@
 
-source("/project/CAclust_scripts/CAclust_paper/benchmarking_splatter_sim/setup.R")
+source("../setup.R")
 
 algorithm <- "Plaid"
-
-# write_csv(as_tibble(opt), file.path(outdir, paste0(algorithm, "_", name, '_parameters.csv')))
-# saveRDS(opt, file.path(outdir, paste0(algorithm, "_", name, '_parameters.rds')))
-
-
 
 
 ## PLAID
@@ -67,3 +62,4 @@ if (isTRUE(sim)){
 write_csv(eval_res, file.path(outdir, paste0(algorithm, "_", name, '_EVALUATION.csv')))
 
 print('All done!')
+cat("\nFinished benchmarking!\n")

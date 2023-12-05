@@ -1,12 +1,8 @@
 
-# WORK IN PROGRESS - DO NOT RUN!
 
-source("/project/CAclust_scripts/CAclust_paper/benchmarking_splatter_sim/setup.R")
+source("../setup.R")
 
 algorithm <- "QUBIC2"
-
-# write_csv(as_tibble(opt), file.path(outdir, paste0(algorithm, "_", name, '_parameters.csv')))
-# saveRDS(opt, file.path(outdir, paste0(algorithm, "_", name, '_parameters.rds')))
 
 
 tmp_dir <- system("echo $MXQ_JOB_TMPDIR")
@@ -21,9 +17,6 @@ cat("\nStarting QUBIC2.\n")
 
 t = Sys.time()
 
-# TODO
-# qQubic2 -q parameter qQubic2 = 0.1
-# objective function objF objF=""
 out <- system(cmd)
 
 t.run = difftime(Sys.time(), t, units = 'secs')
@@ -73,3 +66,4 @@ if (isTRUE(sim)){
 write_csv(eval_res, file.path(outdir, paste0(algorithm, "_", name, '_EVALUATION.csv')))
 
 print('All done!')
+cat("\nFinished benchmarking!\n")

@@ -1,6 +1,3 @@
-# libs <- "/home/kohl/R/MarIuX64/R4.1"
-# libs <- c("/home/zhao/R/x86_64-pc-linux-gnu-library/4.2", "/pkg/R-4.2.1-0/lib/R/library" )
-# .libPaths(libs)
 
 library(SingleCellExperiment)
 library(scater)

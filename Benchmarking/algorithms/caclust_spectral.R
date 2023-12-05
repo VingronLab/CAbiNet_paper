@@ -1,23 +1,14 @@
 
-source("/project/CAclust_scripts/CAclust_paper/benchmarking_splatter_sim/setup.R")
+source("../setup.R")
 
 algorithm <- "caclust_spectral"
 
-# write_csv(as_tibble(opt), file.path(outdir, paste0(algorithm, "_", name, '_parameters.csv')))
-# saveRDS(opt, file.path(outdir, paste0(algorithm, "_", name, '_parameters.rds')))
-
-
-
-
-# if (isTRUE(graph_select)){
-#     ngenes <- nrow(counts) * 0.8
-# }
 
 cat("\nStarting CA.\n")
 t = Sys.time()
 caobj = cacomp(cnts,
                dims = dims,
-               ntop = nrow(cnts),
+               top = nrow(cnts),
                python = TRUE)
 
 t.CA = difftime(Sys.time(), t, units = 'secs')
@@ -37,26 +28,16 @@ res <-
                 SNN_prune = prune,
                 mode = SNN_mode,
                 select_genes = graph_select,
-                prune_overlap = TRUE,
+                # prune_overlap = TRUE,
+                prune_overlap = prune_overlap,
                 overlap = overlap,
                 calc_gene_cell_kNN = gcKNN,
                 algorithm = 'spectral',
                 spectral_method = "skmeans",
                 use_gap = usegap,
                 nclust = nclust)
-# },
-# error = function(cond){
-#
-#     return(biclust::BiclustResult(mypara = list(),
-#                                   a = matrix(),
-#                                   b = matrix(),
-#                                   c = 0,
-#                                   d = list()))
-#
-# })
-
 t.run = difftime(Sys.time(), t, units = 'secs')
-# write.csv(t.SC, file.path(outdir, paste0(name, '_sc_runtime.csv')), row.names =F )
+
 if (is(res, "caclust")) res <- convert_to_biclust(res)
 
 
@@ -117,3 +98,4 @@ ggsave(plot = p,
 
 }
 print('All done!')
+cat("\nFinished benchmarking!\n")

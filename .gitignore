@@ -1,12 +1,10 @@
-.Rproj.user
-.Rhistory
-.RData
-.RData*
-.Ruserdata
-# src/*.o
-# src/*.so
-# src/*.dll
-# .ipynb*
-.ipynb_*/
-*/.ipynb_*/
-# inst/doc
+/manu_notTogit
+*/.ipynb_checkpoints
+*/*/.ipynb_checkpoints
+*/*/*/.ipynb_checkpoints
+/Benchmarking/data_scalability/pbmc3k
+/Data/*
+!/Data/.gitkeep
+Data.zip
+
+

@@ -1,4 +1,3 @@
-
 library(Rcpp)
 library(CAbiNet)
 library(APL)
@@ -19,12 +18,14 @@ library(runibic)
 library(skmeans)
 library(scPNMF)
 library(bluster)
+library(dplyr)
 library(monocle3)
+
 
 set.seed(2358)
 
-source("./helper_funs.R")
-source("./clustering_error.R")
+source("./sim_eval.R")
+source("./algorithms/biclustlib/clustering_error.R")
 
 
 option_list = list(
@@ -105,6 +106,13 @@ option_list = list(
                 help="prune cutoff for sample SNN graph",
                 metavar="numeric"),
 
+    make_option(c("--prune_overlap"),
+                type="logical",
+                action = "store",
+                default=TRUE,
+                help="prune gene nodes or not in the SNN graph by overlapping of neighbourhood",
+                metavar="logical"),
+
     make_option(c("--resolution"),
                 type="numeric",
                 action = "store",
@@ -146,6 +154,13 @@ option_list = list(
                 default=NA,
                 help="Whether genes should be selected on the graph",
                 metavar="logical"),
+    
+    make_option(c("--graph_select_by_prop"),
+                type="logical",
+                action = "store",
+                default=FALSE,
+                help="Whether top variable genes should be selected by 80% criterion",
+                metavar="logical"),
 
     make_option(c("--gcKNN"),
                 type="logical",
@@ -159,6 +174,13 @@ option_list = list(
                 action = "store",
                 default=NA,
                 help="SNN mode for caclust",
+                metavar="character"),
+    
+    make_option(c("--leiden_pack"),
+                type="character",
+                action = "store",
+                default='igraph',
+                help="package for running leiden algorithm",
                 metavar="character"),
 
     make_option(c("--overlap"),
@@ -411,7 +433,75 @@ option_list = list(
         action = "store",
         default= 100, # default 0.25
         help="Number of marker genes to calculate by Monocle3",
+        metavar="numeric"),
+    
+    # DivBiclust
+    make_option(c("--maxdiff"),
+        type="numeric",
+        action = "store",
+        default= 0.15,
+        help="Argument max_diff",
+        metavar="numeric"),
+    make_option(c("--dorate"),
+        type="numeric",
+        action = "store",
+        default= 0.1,
+        help="fraction of missing values in a bicluster",
+        metavar="numeric"),
+    make_option(c("--seedColSz"),
+        type="numeric",
+        action = "store",
+        default= 50,
+        help="size of seed gene set",
+        metavar="numeric"),
+     make_option(c("--maxColSz"),
+        type="numeric",
+        action = "store",
+        default= 100,
+        help="maximum size of gene set, fixed to 100",
+        metavar="numeric"),
+    make_option(c("--simThresh"),
+        type="numeric",
+        action = "store",
+        default= 0.5,
+        help="similarity threshold for pattern merging, fixed to 0.5",
+        metavar="numeric"),
+    make_option(c("--isdivbiclust"),
+         type = 'logical',
+         action = 'store',
+         default = FALSE,
+         help = 'whether the chosen algorithm is divbiclust or not',
+         metavar = 'logical'),
+
+    # BackSpin
+    
+    make_option(c("--numLevels"),
+        type="numeric",
+        action = "store",
+        default = 2,
+        help="the number of splits that will be tried",
+        metavar="numeric"),
+    
+    make_option(c("--stop_const"),
+        type="numeric",
+        action = "store",
+        default= 1.15,
+        help="minimum score that a breaking point has to reach to be suitable for splitting",
+        metavar="numeric"),
+    
+    make_option(c("--low_thrs"),
+        type="numeric",
+        action = "store",
+        default= 0.2,
+        help="genes with average lower than this threshold are assigned to either of the splitting group reling on genes that are higly correlated with them",
         metavar="numeric")
+    
+    #make_option(c("--pcapreproc"),
+    #     type = 'logical',
+    #     action = 'store',
+    #     default = FALSE,
+    #     help = 'perform PCA dim. reduction as a preprocessing step.',
+    #     metavar = 'logical')
 
 );
 
@@ -429,6 +519,8 @@ if (is.null(opt$file)){
     stop("Argument --name is missing.", call.=FALSE)
 }
 
+dataset=opt$dataset
+
 
 # Misc
 filepath = opt$file
@@ -443,6 +535,7 @@ truth = opt$truth
 
 DECOMP <- opt$decomp
 
+#pca_preproc <- opt$pcapreproc
 
 if(nclust == "NULL"){
     nclust <- NULL
@@ -453,12 +546,15 @@ if(nclust == "NULL"){
 dims = opt$dims
 NNs = opt$NNs
 prune = opt$prune
+prune_overlap = opt$prune_overlap
 resol = as.numeric(opt$resolution)
 usegap = opt$usegap
 SNN_mode = opt$SNN_mode
 graph_select <- opt$graph_select
+graph_select_by_prop <- opt$graph_select_by_prop
 gcKNN <- opt$gcKNN
 overlap <- opt$overlap
+leiden_pack = opt$leiden_pack
 
 if (is.character(overlap)) overlap <- NA
 
@@ -525,6 +621,21 @@ resolution = as.numeric(opt$resolution)
 reduction_method = opt$redm
 genes_to_test_per_group = opt$ngene_pg
 
+# DivBiclust
+max_diff = opt$maxdiff
+do_rate = opt$dorate
+seed_col_sz = opt$seedColSz
+max_col_sz = opt$maxColSz
+simThresh = opt$simThresh
+is_divbiclust = opt$isdivbiclust
+
+
+# BackSpin
+numL <- opt$numLevels
+stopc <- opt$stop_const
+lowT <- opt$low_thrs
+
+
 if (isTRUE(sim)){
     sim_params <- stringr::str_match(string = opt$file,
     # pattern = ".*dePROB-(?<dePROB>[0-9]_[0-9]*)_defacLOC-(?<defacLOC>[0-9]_?[0-9]*)_defacSCALE-(?<defacSCALE>[0-9]_?[0-9]*).rds")
@@ -535,12 +646,28 @@ if (isTRUE(sim)){
     opt$defacSCALE <- as.numeric(gsub("_", ".", sim_params[,"defacSCALE"]))
 }
 
-fileformat = tools::file_ext(filepath)
 
+
+if (isTRUE(is_divbiclust)){
+    # prefix of input file name
+    ds_type = file.path(outdir,paste0(name, '_Ntop_', ntop))
+   	in_file = file.path(outdir,paste0(dataset, '_Ntop_', ntop)) 
+    # calculate the dropout rates in the input data set (the data that has been preprocessed)
+    filepath = file.path(outdir, paste0(dataset, '_Ntop_', ntop, '_matrix.txt' ))
+    mat = read.csv(filepath,  header = F,  skip = 1)
+    mat = mat[, 2:ncol(mat)]
+    # mat[is.na(mat)] = 0
+    # do_rate = sum(mat == 0)/dim(mat)[1]/dim(mat)[2]
+    ncell = ncol(mat)
+                    
+}
+
+fileformat = tools::file_ext(filepath)
 
 if (fileformat == 'txt'){
 
-    stop("Provided txt file as input. RDS required.")
+    # stop("Provided txt file as input. RDS required.")
+    cat('running divbiclust.....')
 
     # cnts = read.table(opt$file, row.names = 1, header=T, sep = '\t')
     # cnts = as.matrix(cnts)
@@ -559,13 +686,13 @@ if (fileformat == 'txt'){
 
         genevars <- modelGeneVar(data, assay.type = "logcounts")
 
-        if (isTRUE(graph_select)){
+        if (isTRUE(graph_select_by_prop) & isTRUE(graph_select)){
 
-            chosen <- getTopHVGs(genevars, prop = 0.8)
+            chosen <- getTopHVGs(genevars, prop = 0.8, var.threshold = NULL)
 
         } else {
 
-            chosen <- getTopHVGs(genevars, n = ntop)
+            chosen <- getTopHVGs(genevars, n = ntop, var.threshold = NULL)
 
         }
 
@@ -573,11 +700,9 @@ if (fileformat == 'txt'){
         data <- data[chosen,]
     }
 
-    cnts <- as.matrix(logcounts(data))
 
-    # genes_detect <- rowSums(cnts > 0) > (ncol(cnts)*0.01)
-    # cnts <- cnts[genes_detect,]
-    # data <- data[genes_detect,]
+	cnts <- as.matrix(logcounts(data))
+
 
     trueclusters = colData(data)[,colnames(colData(data)) == truth]
 

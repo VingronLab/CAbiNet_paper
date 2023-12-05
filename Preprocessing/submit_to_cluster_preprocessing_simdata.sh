@@ -12,8 +12,8 @@ TMPDIR=10G
 
 # indir="./sim_data/sim_data"
 
-indir="../Data/rawdata/simulated"
-outdir="./sim_data/preprocessed"
+indir="../Data/sim_data/raw"
+outdir="../Data/sim_data/preprocessed"
 
 logdir=${outdir}_log
 SCRIPT="./data_preprocessing_splatter.R"

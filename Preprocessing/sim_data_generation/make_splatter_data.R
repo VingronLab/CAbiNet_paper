@@ -5,17 +5,18 @@ library(scuttle)
 library(scran)
 library(scRNAseq)
 library(TENxPBMCData)
+library(Seurat)
 
 set.seed(12345)
 
 
 # Uncomment for splatter data based on Zeisel Brain data.
-dataset = "zeisel"
+dataset <- "zeisel"
 
 # Uncomment for splatter data based on Pbcm3k data.
-# dataset = "pbmc3k"
+# dataset <- "pbmc3k"
 
-maindir <- paste0("../Data/rawdata/simulated/", dataset, "/")
+maindir <- paste0("../../Data/sim_data/raw/", dataset, "/")
 dir.create(maindir)
 
 if(dataset == "zeisel"){
@@ -25,7 +26,6 @@ if(dataset == "zeisel"){
   sce <- computeSumFactors(sce, cluster=clust.sce, min.mean=0.1)
   sce <- logNormCounts(sce)
   sce <- runUMAP(sce)
-  # plotUMAP(sce, colour_by = "level1class")
 
 } else if (dataset == "pbmc3k"){
 

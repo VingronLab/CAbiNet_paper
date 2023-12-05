@@ -1,6 +1,6 @@
 
 
-source("/project/CAclust_scripts/CAclust_paper/benchmarking_splatter_sim/setup.R")
+source("../setup.R")
 
 algorithm <- "BC_Spectral"
 
@@ -29,6 +29,7 @@ t.run <- difftime(Sys.time(), t, units = 'secs')
 
 res <- name_biclust(biclust = res, input = cnts)
 
+print(res)
 
 #########
 if (isTRUE(sim)){
@@ -70,3 +71,4 @@ if (isTRUE(sim)){
 write_csv(eval_res, file.path(outdir, paste0(algorithm, "_", name, '_EVALUATION.csv')))
 
 print('All done!')
+cat("\nFinished benchmarking!\n")

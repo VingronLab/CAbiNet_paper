@@ -186,8 +186,8 @@ if(org == "hs"){
     mt_genes <- grepl("^MT-",  rowData(sce)$SYMBOL)
 
 } else if (org == "mm"){
-    # sce <- getSCEWithSymbols(sce, keytype = 'ENSEMBL', org.db = org.db)
-    mt_genes <- grepl("^mt-",  rowData(sce)$SYMBOL)
+
+  mt_genes <- grepl("^mt-",  rowData(sce)$SYMBOL)
 
 }
 

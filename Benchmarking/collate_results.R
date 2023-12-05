@@ -67,11 +67,9 @@ df_eval <- bind_rows(df_list)
 
 saveRDS(df_eval, paste0(outdir, "/", opt$name, ".rds"))
 
-###############################
-# Example call for the script #
-###############################
 
-# Rscript collate_results.R --name "pbmc3k_benchmarking" \
-#                           --indir "./results/simulated/out/pbmc3k/" \
-#                           --outdir "./results/simulated/collated_results/"
+# Example usage:
 
+# Rscript-4.2.1 collate_results.R --name "pbmc3k_splatter_sim_results" \
+#                             --indir "./results/simulated/out/pbmc3k/" \
+#                             --outdir "./results/simulated/collated_results/"

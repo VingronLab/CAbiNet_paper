@@ -11,15 +11,12 @@ MINUTES=120
 TMPDIR=80G
 
 
-# indir="./ExperimentalData/rawdata"
-
-indir="../Data/rawdata/realdata"
-outdir="./ExperimentalData/preprocessed"
+indir="../Data/real_data/raw"
+outdir="../Data/real_data/preprocessed"
 logdir=${outdir}_log
 SCRIPT="./data_preprocessing.R"
 
 mkdir -p $outdir
-# cd $outdir
 
 mkdir -p $logdir
 
@@ -262,43 +259,3 @@ mxqsub --stdout="${logdir}/${filename}_filtered${pcts}.stdout.log" \
         --mt
 
 
-# for f in $files; do
-
-#     for p in ${pcts[@]}; do
-
-#         filename=`basename $f .rds`
-
-#         if [ $f = "ZeiselBrain.rds" ]; then
-
-#             mxqsub --stdout="${logdir}/${filename}_${m}.stdout.log" \
-#                    --stderr="${logdir}/${filename}_${ncell}.stderr.log" \
-#                    --group-name="${filename}" \
-#                    --threads=$THREADS \
-#                    --memory=$MEMORY \
-#                    --tmpdir=80G \
-#                    -t $MINUTES \
-#                   Rscript-4.2.1 $SCRIPT   \
-# 		           --outdir $outdir \
-#                    --file $f \
-#                    --name $filename \
-#                    --pct $p \
-#                    --org mm
-#         else
-#             mxqsub --stdout="${logdir}/${filename}/${filename}_${m}.stdout.log" \
-#                    --stderr="${logdir}/${filename}_${ncell}_pct${p}.stderr.log" \
-#                    --group-name="${filename}" \
-#                    --threads=$THREADS \
-#                    --memory=$MEMORY \
-#                    --tmpdir=80G \
-#                    -t $MINUTES \
-#                   Rscript-4.2.1 $SCRIPT   \
-# 		           --outdir $outdir \
-#                    --file $f \
-#                    --name $filename \
-#                    --pct $p \
-#                    --truth $truth \
-#                    --org hs
-
-#         fi
-#     done
-# done
