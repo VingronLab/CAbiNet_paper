@@ -1,5 +1,5 @@
 
-source("../setup.R")
+source("./setup.R")
 
 algorithm <- "caclust_spectral"
 

@@ -208,10 +208,10 @@ ari_genes <- function(splatter_sim, biclust_obj) {
   rd <- rd[rd$Gene %in% rownames(gc),]
   
   de_fac <- dplyr::select(rd, starts_with("DEFacGroup"))
-  de_fac <- as.matrix(de_fac)
+ # de_fac <- as.matrix(de_fac)
   
-  rMs <- rowMaxs(de_fac)
-  idxs <- purrr::map(seq_len(nrow(de_fac)), function(x) which(de_fac[x,] == rMs[x]))
+  #rMs <- rowMaxs(de_fac)
+  idxs <- purrr::map(seq_len(nrow(de_fac)), function(x) which(de_fac[x,] == max(as.numeric(de_fac[x,]))))
   
   de_genes <- de_fac > 1 | de_fac < 1 # doesnt consider that gene can be DE in 2 groups
   de_bool <- matrix(FALSE,
@@ -223,9 +223,10 @@ ari_genes <- function(splatter_sim, biclust_obj) {
     
     if(any(de_genes[x,])) {
     vals <- de_fac[x,][de_genes[x,]]
+    vals <- as.numeric(vals)
     max_val <- which(abs(vals) == max(abs(vals)))
     
-    de_bool[x, which(de_fac[x,] == vals[max_val])] <- TRUE
+    de_bool[x, which(as.numeric(de_fac[x,]) == vals[max_val])] <- TRUE
     }else {
       next
     }
@@ -385,7 +386,7 @@ sim_truth <- function(splatter_sim,
   de_fac <- dplyr::select(rd, starts_with("DEFacGroup"))
   colnames(de_fac) <- gsub("DEFacGroup", "Group", colnames(de_fac))
   
-  de_fac <- as.matrix(de_fac)
+ # de_fac <- as.matrix(de_fac)
   
   if (any(de_fac < 1)) stop("Only simulated datesets with no downregulated genes allowed.")
   de_genes <- de_fac > factor_cutoff
@@ -396,14 +397,13 @@ sim_truth <- function(splatter_sim,
                       ncol = ncol(de_fac),
                       dimnames = list(rownames(de_fac),
                                       colnames(de_fac)))
-    
     for (x in seq_len(nrow(de_fac))) {
       
       if(any(de_genes[x,])) {
         vals <- de_fac[x,][de_genes[x,]]
+	vals <- as.numeric(vals)
         max_val <- which(abs(vals) == max(abs(vals)))
-        
-        de_bool[x, which(de_fac[x,] == vals[max_val])] <- TRUE
+        de_bool[x, which(as.numeric(de_fac[x,]) == vals[max_val])] <- TRUE
       }else {
         next
       }
@@ -438,39 +438,51 @@ sim_truth <- function(splatter_sim,
 
 
 evaluate_sim <- function(sce, biclust, truth_col = NULL){
-  
-  
-  
+
+
+
   true_biclust <- sim_truth(splatter_sim = sce,
-                            factor_cutoff = 1,
-                            no_overlap = TRUE)
-  
+    factor_cutoff = 1,
+    no_overlap = TRUE)
+
   if (biclust@Number > 0 ){
-    
+
     nomono_biclust <- rm_monoclusters(biclust)
     nomono_truth <- rm_monoclusters(true_biclust)
-    
+    print("rm nomoclusters is done")
+
     ac <- ari_cells(reference = sce,
                     biclust_obj = biclust,
                     reference_col = "Group")
-    
-	ac_old <- ari_cells_old(reference = sce,
-							biclust_obj = biclust,
-							reference_col = "Group")
-    
+
+    ac_old <- ari_cells_old(reference = sce,
+                            biclust_obj = biclust,
+                            reference_col = "Group")
+
     ag <- ari_genes(splatter_sim = sce,
                     biclust_obj = biclust)
-    
+    print("ari_genes is done")
+
     relevance <- relevance.biclust(nomono_biclust, nomono_truth)
+    print('relevance is done')
+
     recovery <- recovery.biclust(nomono_biclust, nomono_truth)
-	
-	fARI <- fclust::ARI.F(VC = sce$Group, U = t(biclust@NumberxCol))
+    print('recovery is done')
+
+    print(dim(biclust@NumberxCol))
+    
+    #fARI <- fclust::ARI.F(VC = sce$Group, U = t(biclust@NumberxCol))
+    fARI = NA
+    print('fARI is done')
 
     genes_kept <- rownames(nomono_biclust@RowxNumber)
     nomono_truth@RowxNumber <- nomono_truth@RowxNumber[rownames(nomono_truth@RowxNumber) %in% genes_kept,]
-    
+
     clustering_error <-  biclustlib_CE(nomono_biclust, nomono_truth)
+    print('CE is done')
+
     RNIA <-  biclustlib_RNIA(nomono_biclust, nomono_truth)
+    print('RNIA is done')
 
   }else{
     ac <- NA
@@ -479,21 +491,21 @@ evaluate_sim <- function(sce, biclust, truth_col = NULL){
     recovery = NA
     clustering_error = NA
     RNIA = NA
-	fARI <- NA
-	ac_old <- NA
+    fARI <- NA
+    ac_old <- NA
   }
-  
+
   evldf =  c("ARI_cells" = ac,
-             "ARI_genes" = ag,
-             "relevance" = relevance,
-             "recovery" = recovery,
-             "clustering_error" = clustering_error,
-             "RNIA" = RNIA,
-  			 "fuzzyARI_cells" = fARI,
-  			 "ARI_cells_old" = ac_old)
-  
+              "ARI_genes" = ag,
+              "relevance" = relevance,
+              "recovery" = recovery,
+              "clustering_error" = clustering_error,
+              "RNIA" = RNIA,
+              "fuzzyARI_cells" = fARI,
+              "ARI_cells_old" = ac_old)
+
   return(evldf)
-  
+
 }
 
 

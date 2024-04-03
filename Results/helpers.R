@@ -315,7 +315,7 @@ library(ggthemes)
 
 library(s4vd)
 
-source("..//Benchmarking/sim_eval_2023.R")
+source("..//Benchmarking/sim_eval.R")
 
 
 get_gene_clusters <- function(splatter_sim) {

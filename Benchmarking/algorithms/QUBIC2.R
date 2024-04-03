@@ -1,6 +1,6 @@
 
 
-source("../setup.R")
+source("./setup.R")
 
 algorithm <- "QUBIC2"
 

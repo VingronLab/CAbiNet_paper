@@ -1,5 +1,5 @@
 
-source("../setup.R")
+source("./setup.R")
 
 # to install run "pip install backspinpy"
 source("./backspin/backspin_fun.R")

@@ -1,3 +1,7 @@
+# NOTE: It is recommended to use renv with the package versions specified in the renv.lock file
+# Uncomment the line below if you are using renv.
+# renv::load("../")
+
 library(Rcpp)
 library(CAbiNet)
 library(APL)

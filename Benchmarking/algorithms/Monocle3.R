@@ -1,5 +1,5 @@
 
-source("../setup.R")
+source("./setup.R")
 
 
 
@@ -22,8 +22,9 @@ cds <- preprocess_cds(cds,
                       use_genes = rownames(data))
 
 cds <- reduce_dimension(cds,
-                       reduction_method = reduction_method
-                       )
+                      reduction_method = reduction_method,
+                      verbose = TRUE
+)
 
 cds <- cluster_cells(cds,
                      reduction_method = reduction_method,

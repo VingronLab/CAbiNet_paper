@@ -4,11 +4,11 @@ THREADS=16
 MEMORY=8G
 MINUTES=600
 
-indir=./results/out
+indir=../results/out/
 outdir=./results/collate_res
 mkdir -p $outdir
 
-name='sim_2kgenes'
+name='collated_results'
 
  mxqsub --stdout="${outdir}/$name.stdout.log" \
        --group-name=$name \

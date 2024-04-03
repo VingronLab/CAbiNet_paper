@@ -1,8 +1,10 @@
 #!/bin/bash
 
+cd ../
 
-indir='../../Data/sim_data/raw/data_scalability'
-dataset_list=`ls -d ${indir}/*`
+# indir='../../Data/sim_data/raw/data_scalability'
+indir='./results/log'
+dataset_list=`ls -d ${indir}/*/`
 
 for dataset in ${dataset_list[@]}; do
 
@@ -31,8 +33,8 @@ files_err=$(comm -23 <(echo "$files_err" | sort) <(echo "$files_alloc_err" | sor
 TMPDIR=0G
 
 # MAXMEM=500G
-MAXMEM=2000G
-MAXTIME=2400
+MAXMEM=1000G
+MAXTIME=1440
 MAXDIR=200G
 
 IFS=$'\n'
@@ -282,8 +284,8 @@ for file in $files_err; do
 
     done < <(awk '/# BEGIN_MXQ/,/# END_MXQ/' "$sh_file")
 
-    halftime=$((${MAXMEM%G}/2))
-    halfmem=$((MAXTIME/2))
+    halfmem=$((${MAXMEM%G}/2))
+    halftime=$((MAXTIME/2))
     halfdir=$((${MAXDIR%G}/2))
 
     if [ "${MEMORY%G}" -lt "$halfmem" ]; then
@@ -389,8 +391,8 @@ for file in $shtorun; do
 
     done < <(awk '/# BEGIN_MXQ/,/# END_MXQ/' "$sh_file")
 
-    halftime=$((${MAXMEM%G}/2))
-    halfmem=$((MAXTIME/2))
+    halfmem=$((${MAXMEM%G}/2))
+    halftime=$((MAXTIME/2))
     halfdir=$((${MAXDIR%G}/2))
 
     if [ "${MEMORY%G}" -lt "$halfmem" ]; then
