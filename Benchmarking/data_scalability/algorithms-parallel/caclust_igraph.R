@@ -1,20 +1,7 @@
 
-#source("/project/CAclust_scripts/CAclust_paper/benchmarking_splatter_sim/newARI/setup.R")
-source('/project/CAclust_scripts/CAclust_paper/2024_NAR_submission_files/Benchmarking/setup.R')
+source('./setup.R')
 
 algorithm <- "caclust_igraph"
-
-# write_csv(as_tibble(opt), file.path(outdir, paste0(algorithm, "_", name, '_parameters.csv')))
-# saveRDS(opt, file.path(outdir, paste0(algorithm, "_", name, '_parameters.rds')))
-
-
-
-
-# if (isTRUE(graph_select)){
-#     ngenes <- nrow(counts) * 0.8
-# }
-
-
 
 if (is.na(dims)){
     stop("Need to specify dimensionality.")

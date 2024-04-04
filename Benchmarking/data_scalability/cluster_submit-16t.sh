@@ -1,5 +1,7 @@
 #!/bin/bash
 
+cd ../
+
 #########################################################################################################
 ########### Attention: 
 ########### The simulated data sets can be downloaded from online data repository.
@@ -7,19 +9,14 @@
 #########################################################################################################
 
 # Monocle3 requires specific libraries.
-LD_LIBRARY_VAR=/project/CAclust_scripts/CAclust_paper/2024_NAR_submission_files/renv/local/lib:../renv/local/include
-# LD_LIBRARY_VAR=$HOME/.local/lib:$HOME/.local/bin:$HOME/.local/include
-GDAL_DATA_VAR=/project/CAclust_scripts/CAclust_paper/2024_NAR_submission_files/renv/local/share/gdal
-# GDAL_DATA_VAR=$HOME/.local/share/gdal
-
+LD_LIBRARY_VAR=../renv/local/lib:../renv/local/include
+GDAL_DATA_VAR=../renv/local/share/gdal
 
 THREADS=16
 MEMORY=1000G
 MINUTES=600
 
-cd ../
-#scripts_path="../algorithms"
-scripts_path='data_scalability/algorithms-parallel'
+scripts_path='./data_scalability/algorithms-parallel'
 
 outdir=./data_scalability/results_16t_parallel
 mkdir -p $outdir
@@ -35,10 +32,9 @@ here_dir="${outdir}/sh/"
 mkdir -p $here_dir
 mkdir -p $here_dir/.done/
 
-#indir='../../Data/sim_data/raw/data_scalability'
-indir='/project/CAclust/CAbiNET_paper/paper_revision/benchmarking/data_scalability/pbmc3k'
+indir='../Data/sim_data/raw/data_scalability'
 
-datasets=`ls -d ${indir}/*`
+datasets=`ls -d ${indir}/*/`
 
 for dataset in ${datasets[@]}; do
 
@@ -62,9 +58,6 @@ graph_select=(TRUE)
 SNN_mode=("out")
 calc_gckNN=(FALSE)
 prune=$(echo 'print(1/15)' | python3)
-
-
-
 
 
 for f in ${files[@]}; do
@@ -127,7 +120,6 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_VAR:\$LD_LIBRARY_PATH
 export GDAL_DATA=$GDAL_DATA_VAR:\$GDAL_DATA
 
 trap 'echo ERROR_TIMEOUT >&2' SIGXCPU
-cd /project/CAclust_scripts/CAclust_paper/2024_NAR_submission_files/Benchmarking
 
 Rscript-4.2.1 $SCRIPT   \\
    --outdir $OUTDIR  \\
@@ -178,7 +170,6 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_VAR:\$LD_LIBRARY_PATH
 export GDAL_DATA=$GDAL_DATA_VAR:\$GDAL_DATA
 
 trap 'echo ERROR_TIMEOUT >&2' SIGXCPU
-cd /project/CAclust_scripts/CAclust_paper/2024_NAR_submission_files/Benchmarking
 
 Rscript-4.2.1 $SCRIPT   \\
    --outdir $OUTDIR  \\
@@ -208,31 +199,8 @@ chmod +x $tmp_sh
                                --memory=$MEM_caclust \
                                -t $MINUTES \
                                bash $tmp_sh
-<<!
-                        mxqsub --stdout="${logdir}/bench_sim_${dataset}_${nm}.stdout.log" \
-                               --group-name="bench_sim_scalability_${algorithm}" \
-                               --threads=$THREADS \
-                               --memory=$MEM_caclust \
-                               -t $MINUTES \
-                               Rscript-4.2.1 $SCRIPT   \
-                                   --outdir $OUTDIR  \
-                                   --file $f \
-                                   --dataset $dataset \
-                                   --name $nm \
-                                   --ntop $nt \
-                                   --dims $d    \
-                                   --prune $prune \
-                                   --prune_overlap FALSE \
-                                   --NNs $n     \
-                                   --resolution $res     \
-                                   --sim TRUE \
-                                   --truth $truth \
-                                   --graph_select $gs \
-                                   --nclust NULL \
-                                   --SNN_mode $snn \
-                                   --gcKNN $gc \
-                                   --overlap $ov
-!
+
+
                         algorithm="caclust_spectral"
                         SCRIPT="${scripts_path}/${algorithm}.R"
 
@@ -252,7 +220,6 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_VAR:\$LD_LIBRARY_PATH
 export GDAL_DATA=$GDAL_DATA_VAR:\$GDAL_DATA
 
 trap 'echo ERROR_TIMEOUT >&2' SIGXCPU
-cd /project/CAclust_scripts/CAclust_paper/2024_NAR_submission_files/Benchmarking
 
 Rscript-4.2.1 $SCRIPT   \\
    --outdir $OUTDIR  \\
@@ -284,37 +251,11 @@ chmod +x $tmp_sh
                                -t $MINUTES \
                                bash $tmp_sh
 
-<<!
-                        mxqsub --stdout="${logdir}/bench_sim_${dataset}_${nm}.stdout.log" \
-                               --group-name="bench_sim_${filename}_${algorithm}" \
-                               --threads=$THREADS \
-                               --memory=$MEM_caclust \
-                               -t $MINUTES \
-                               Rscript-4.2.1 $SCRIPT   \
-                                   --outdir $OUTDIR  \
-                                   --file $f \
-                                   --dataset $dataset \
-                                   --name $nm \
-                                   --ntop $nt \
-                                   --dims $d    \
-                                   --prune $prune \
-                                   --prune_overlap FALSE \
-                                   --NNs $n     \
-                                   --resolution $res     \
-                                   --sim TRUE \
-                                   --truth $truth \
-                                   --usegap TRUE \
-                                   --graph_select $gs \
-                                   --nclust NULL \
-                                   --SNN_mode $snn \
-                                   --gcKNN $gc \
-                                   --overlap $ov
-!
                         counter=$((counter+1))
-                        
+
                         done
                     done
-                done                              
+                done
             done
         done
     done

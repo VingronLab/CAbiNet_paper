@@ -1,18 +1,6 @@
 
-#source("/project/CAclust_scripts/CAclust_paper/benchmarking_splatter_sim/newARI/setup.R")
-#source('../../setup.R')
-source('/project/CAclust_scripts/CAclust_paper/2024_NAR_submission_files/Benchmarking/setup.R')
+source('./setup.R')
 algorithm <- "caclust_spectral"
-
-# write_csv(as_tibble(opt), file.path(outdir, paste0(algorithm, "_", name, '_parameters.csv')))
-# saveRDS(opt, file.path(outdir, paste0(algorithm, "_", name, '_parameters.rds')))
-
-
-
-
-# if (isTRUE(graph_select)){
-#     ngenes <- nrow(counts) * 0.8
-# }
 
 cat("\nStarting CA.\n")
 t = Sys.time()
@@ -30,8 +18,6 @@ cat("\nStarting CAclust spectral.\n")
 t = Sys.time()
 
 res <-
-# tryCatch({
-
     caclust(obj = caobj,
                 k = NNs,
                 loops = FALSE,
@@ -47,19 +33,8 @@ res <-
                 use_gap = usegap,
                 nclust = nclust,
                 BPPARAM = MulticoreParam(workers = 16))
-# },
-# error = function(cond){
-#
-#     return(biclust::BiclustResult(mypara = list(),
-#                                   a = matrix(),
-#                                   b = matrix(),
-#                                   c = 0,
-#                                   d = list()))
-#
-# })
-
 t.run = difftime(Sys.time(), t, units = 'secs')
-# write.csv(t.SC, file.path(outdir, paste0(name, '_sc_runtime.csv')), row.names =F )
+
 if (is(res, "caclust")) res <- convert_to_biclust(res)
 
 if (isTRUE(sim)){
@@ -75,7 +50,6 @@ if (isTRUE(sim)){
 
  
 } else{
-   
 
     eval_res <- c(list("algorithm" = algorithm),
                   list("ngenes" = nrow(cnts),
