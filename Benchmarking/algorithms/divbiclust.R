@@ -1,6 +1,6 @@
 ## R wrapper for divbiclust cpp functions
-source("../setup.R")
-sourceCpp('./src/divbiclust.cpp')
+source("./setup.R")
+sourceCpp('./algorithms/src/divbiclust.cpp')
 
 algorithm = 'divbiclust'
 

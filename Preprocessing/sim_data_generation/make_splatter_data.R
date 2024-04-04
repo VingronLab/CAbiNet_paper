@@ -9,7 +9,6 @@ library(Seurat)
 
 set.seed(12345)
 
-
 # Uncomment for splatter data based on Zeisel Brain data.
 dataset <- "zeisel"
 

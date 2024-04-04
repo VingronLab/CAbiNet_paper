@@ -1,0 +1,6 @@
+022ce8fadd30e49aaf0bbf78f73e86d7  dePROB-0_02_defacLOC-0_75_defacSCALE-0_75.rds
+a8a40f12abfc9403fee44817814fd255  dePROB-0_02_defacLOC-1_5_defacSCALE-1_5.rds
+edf15b654b4270e533cecc3e2acd072d  dePROB-0_06_defacLOC-0_75_defacSCALE-0_75.rds
+1dd3a829baaf456835fd45865c744769  dePROB-0_06_defacLOC-1_5_defacSCALE-1_5.rds
+d3fcf8af7fabadced96163dc19045478  dePROB-0_1_defacLOC-0_75_defacSCALE-0_75.rds
+85a73324bd65c97feb45fb6ac2342bbe  dePROB-0_1_defacLOC-1_5_defacSCALE-1_5.rds

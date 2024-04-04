@@ -1,5 +1,5 @@
 
-source("../setup.R")
+source("./setup.R")
 
 algorithm <- "caclust_igraph"
 
@@ -24,18 +24,19 @@ cat("\nStarting CAclust leiden\n")
 t = Sys.time()
 
 res <- caclust(obj = caobj, 
-              k = NNs,
-              loops = FALSE,
-              SNN_prune = prune,
-              mode = SNN_mode,
-              select_genes = graph_select,
-              prune_overlap = prune_overlap,
-              overlap = overlap,
-              calc_gene_cell_kNN = gcKNN,
-              algorithm = 'leiden',
-              leiden_pack = 'igraph')
+               k = NNs,
+               loops = FALSE,
+               SNN_prune = prune,
+               mode = SNN_mode,
+               select_genes = graph_select,
+               prune_overlap = prune_overlap,
+               overlap = overlap,
+               calc_gene_cell_kNN = gcKNN,
+               algorithm = 'leiden',
+               leiden_pack = 'igraph')
 
 t.run = difftime(Sys.time(), t, units = 'secs')
+cat("\nDone with CAbiNet igraph\n")
 
 res <- convert_to_biclust(res)
 

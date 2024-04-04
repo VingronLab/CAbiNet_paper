@@ -25,7 +25,7 @@
 backspin<-function(data, numLevels=2, first_run_iters=10.0, first_run_step=0.05, runs_iters=8 ,runs_step=0.25,
                    split_limit_g=2, split_limit_c=2, stop_const = 1.15, low_thrs=0.2, verbose=T){
 
-  source_python("./backspin.py")
+  source_python("./algorithms/backspin/backspin.py")
   
   backspin_args<-c(list(data=data, numLevels=numLevels, first_run_iters=first_run_iters, first_run_step=first_run_step,
                         runs_iters=runs_iters, runs_step=runs_step, split_limit_g=split_limit_g, split_limit_c=split_limit_c,

@@ -1,7 +1,7 @@
 
 # CAbiNet - Data sets used in the manuscript
 
-All the raw/preprocessed datasets, the benchmarking results and data sets discussed in paper can be found in the online data repository https://zenodo.org/records/10260709.
+All the raw/preprocessed datasets, the benchmarking results and data sets discussed in paper can be found in the online data repository https://zenodo.org/records/10260709
 
 - The scripts to download the brain organoid and tabula muris data sets can be found in the `download_raw_data_scripts` folder.
 - Experimental data sets, both raw and preprocessed, should be deposited into the respective folder in `real_data`.

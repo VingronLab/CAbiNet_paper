@@ -277,8 +277,8 @@ for file in $files_err; do
 
     done < <(awk '/# BEGIN_MXQ/,/# END_MXQ/' "$sh_file")
 
-    halftime=$((${MAXMEM%G}/2))
-    halfmem=$((MAXTIME/2))
+    halfmem=$((${MAXMEM%G}/2))
+    halftime=$((MAXTIME/2))
     halfdir=$((${MAXDIR%G}/2))
 
     if [ "${MEMORY%G}" -lt "$halfmem" ]; then
@@ -384,8 +384,8 @@ for file in $shtorun; do
 
     done < <(awk '/# BEGIN_MXQ/,/# END_MXQ/' "$sh_file")
 
-    halftime=$((${MAXMEM%G}/2))
-    halfmem=$((MAXTIME/2))
+    halfmem=$((${MAXMEM%G}/2))
+    halftime=$((MAXTIME/2))
     halfdir=$((${MAXDIR%G}/2))
 
     if [ "${MEMORY%G}" -lt "$halfmem" ]; then
