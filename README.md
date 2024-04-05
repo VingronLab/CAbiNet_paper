@@ -22,7 +22,7 @@ We split the code into several sections to make it easier to reproduce the findi
     - Interactive plots.
 
 
-If you wish to redo the whole analysis, you can simply download all the data sets from the repository https://zenodo.org/records/10260709 to the empty folder `Data`, and follows the 3 sections (Preprocessing -> Benchmarking -> Results) mentioned above. If you simply extract the downloaded data into the `./Data` directory you will have all the data necessary to reproduce our results.
+If you wish to redo the whole analysis, you can simply download all the data sets from the repository https://zenodo.org/records/10260709 and https://zenodo.org/records/10932001 to the empty folder `Data`, and follows the 3 sections (Preprocessing -> Benchmarking -> Results) mentioned above. If you simply extract the downloaded data into the `./Data` directory you will have all the data necessary to reproduce our results. The version of "CAbiNet" that used to reproduce results in our paper can be found from https://figshare.com/articles/software/CAbiNet_Joint_clustering_and_visualization_of_cells_and_genes_for_single-cell_transcriptomics/23276402, the file named as "CAbiNet-main.zip".
 
 In case you would like to only use parts of the data, here are some tips:
 
